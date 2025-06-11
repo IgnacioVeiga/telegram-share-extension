@@ -1,6 +1,6 @@
 {
     "name": "Telegram Share Extension",
-    "description": "Comparte enlaces e imágenes fácilmente a Telegram usando Telegram Desktop o Bot API.",
+    "description": "Easily share links and images to Telegram using Telegram Desktop or Bot API.",
     "version": "1.0",
     "manifest_version": 3,
     "permissions": [
