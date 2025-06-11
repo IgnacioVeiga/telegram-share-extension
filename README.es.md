@@ -17,7 +17,7 @@ Podés elegir entre usar **Telegram Desktop** o la **Telegram Bot API** para env
 Esta extensión **no** recolecta, almacena ni comparte datos personales de forma externa.  
 Toda la configuración se guarda de manera local en tu navegador.
 
-Consultá la [Política de Privacidad](privacy_policy.md) para más detalles.
+Consultá la [Política de Privacidad](privacy_policy.es.md) para más detalles.
 
 ## ⚠️ Disclaimer
 
