@@ -50,6 +50,12 @@ A Chrome Web Store release is planned.
 
 ---
 
+## 📚 Contribution Guide
+
+See the [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+---
+
 ## 📬 Contact
 
 For issues or suggestions, feel free to open an issue or contact the developer.

@@ -50,6 +50,12 @@ Está previsto publicar la extensión en Chrome Web Store.
 
 ---
 
+## 📚 Guía para Contribuir
+
+Consultá las [Pautas de Contribución](CONTRIBUTING.es.md) para más detalles.
+
+---
+
 ## 📬 Contacto
 
 Para reportar errores o sugerencias, podés abrir un issue o contactar al desarrollador.
