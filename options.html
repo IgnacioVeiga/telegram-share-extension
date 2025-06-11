@@ -2,7 +2,7 @@
 <html lang="es">
 	<head>
 		<meta charset="UTF-8" />
-		<title>Configuración</title>
+		<title>Telegram Share Extension</title>
 		<meta
 			name="viewport"
 			content="width=device-width, initial-scale=1.0"
@@ -14,47 +14,49 @@
 	</head>
 
 	<body>
-		<h1>Configuración</h1>
+		<h1 id="settingsTitle"></h1>
 
 		<fieldset>
-			<legend>Telegram Desktop</legend>
-			<label>Alias de usuario/grupo/canal (sin @)</label>
+			<legend id="telegramDesktopLegend"></legend>
+			<label id="telegramAliasLabel"></label>
 			<input
 				id="telegram_username"
 				type="text"
-				title="Nombre de usuario, grupo o canal de Telegram sin el @"
 				autocapitalize="none"
 				autocorrect="off"
 				spellcheck="false"
-				placeholder="Ej: MiCanalCool"
+				placeholder="Username"
 			/>
 		</fieldset>
 
 		<fieldset>
-			<legend>Bot API</legend>
+			<legend id="botApiLegend"></legend>
 			<div>
-				<label>Token del Bot</label>
+				<label id="botTokenLabel"></label>
 				<input
 					id="token"
 					type="password"
+					autocapitalize="none"
+					spellcheck="false"
+					autocorrect="off"
+					placeholder="123456789:ABCdefGhIJKlmnoPQRstuVWXyZ"
 				/>
 			</div>
 
 			<div>
-				<label>Chat ID</label>
+				<label id="chatIdLabel"></label>
 				<input
 					id="chat_id"
 					type="text"
 					autocapitalize="none"
 					autocorrect="off"
 					spellcheck="false"
-					placeholder="Ej: 123456789"
-					title="ID del chat donde se enviarán los mensajes"
+					placeholder="123456789"
 				/>
 			</div>
 		</fieldset>
 
-		<button id="save" title="Guardar configuración" type="button">Guardar</button>
+		<button id="saveButton" type="button"></button>
 
 		<script src="options.js"></script>
 	</body>

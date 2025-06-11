@@ -2,6 +2,9 @@
     "name": "Telegram Share Extension",
     "description": "Easily share links and images to Telegram using Telegram Desktop or Bot API.",
     "version": "1.0",
+    "default_locale": "en",
+    "author": "Ignacio Veiga",
+    "homepage_url": "https://github.com/IgnacioVeiga/telegram-share-extension",
     "manifest_version": 3,
     "permissions": [
         "contextMenus",

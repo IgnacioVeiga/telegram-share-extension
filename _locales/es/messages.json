@@ -1,0 +1,59 @@
+{
+  "extensionName": {
+    "message": "Telegram Share Extension"
+  },
+  "settingsTitle": {
+    "message": "Configuración"
+  },
+  "telegramDesktopLegend": {
+    "message": "Telegram Desktop"
+  },
+  "telegramAliasLabel": {
+    "message": "Alias de usuario/grupo/canal (sin @)"
+  },
+  "telegramAliasTitle": {
+    "message": "Nombre de usuario, grupo o canal de Telegram sin el @"
+  },
+  "botApiLegend": {
+    "message": "Bot API"
+  },
+  "botTokenLabel": {
+    "message": "Token del Bot"
+  },
+  "chatIdLabel": {
+    "message": "Chat ID"
+  },
+  "chatIdTitle": {
+    "message": "ID del chat donde se enviarán los mensajes"
+  },
+  "saveButton": {
+    "message": "Guardar"
+  },
+  "savedMessage": {
+    "message": "¡Configuración guardada!"
+  },
+  "usernameError": {
+    "message": "No incluyas el '@' en el alias de Telegram."
+  },
+  "sendDesktop": {
+    "message": "Enviar por Telegram Desktop"
+  },
+  "sendBot": {
+    "message": "Enviar por Bot API"
+  },
+  "errorTitle": {
+    "message": "Error de Telegram Share"
+  },
+  "noContentError": {
+    "message": "No hay contenido para enviar."
+  },
+  "noAliasError": {
+    "message": "Alias de Telegram no configurado."
+  },
+  "noTokenError": {
+    "message": "Token o Chat ID no configurado."
+  },
+  "botApiError": {
+    "message": "Error enviando con Bot API."
+  }
+}
