@@ -1,0 +1,23 @@
+{
+    "name": "Telegram Share Extension",
+    "version": "1.0",
+    "manifest_version": 3,
+    "permissions": [
+        "contextMenus",
+        "storage",
+        "downloads",
+        "activeTab",
+        "scripting",
+        "notifications"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "options_page": "options.html",
+    "action": {
+        "default_popup": "options.html"
+    },
+    "icons": {
+        "128": "icons/icon128.png"
+    }
+}

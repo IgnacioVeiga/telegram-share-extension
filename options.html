@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Configuración</title>
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<link
+			rel="stylesheet"
+			href="options.css"
+		/>
+	</head>
+
+	<body>
+		<h1>Configuración</h1>
+
+		<fieldset>
+			<legend>Telegram Desktop</legend>
+			<label>Alias de usuario/grupo/canal (sin @)</label>
+			<input
+				id="telegram_username"
+				type="text"
+				title="Nombre de usuario, grupo o canal de Telegram sin el @"
+				autocapitalize="none"
+				autocorrect="off"
+				spellcheck="false"
+				placeholder="Ej: MiCanalCool"
+			/>
+		</fieldset>
+
+		<fieldset>
+			<legend>Bot API</legend>
+			<div>
+				<label>Token del Bot</label>
+				<input
+					id="token"
+					type="password"
+				/>
+			</div>
+
+			<div>
+				<label>Chat ID</label>
+				<input
+					id="chat_id"
+					type="text"
+					autocapitalize="none"
+					autocorrect="off"
+					spellcheck="false"
+					placeholder="Ej: 123456789"
+					title="ID del chat donde se enviarán los mensajes"
+				/>
+			</div>
+		</fieldset>
+
+		<button id="save" title="Guardar configuración" type="button">Guardar</button>
+
+		<script src="options.js"></script>
+	</body>
+</html>
