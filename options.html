@@ -15,47 +15,53 @@
 
 	<body>
 		<h1 id="settingsTitle"></h1>
-
-		<fieldset>
-			<legend id="telegramDesktopLegend"></legend>
-			<label id="telegramAliasLabel"></label>
-			<input
-				id="telegram_username"
-				type="text"
-				autocapitalize="none"
-				autocorrect="off"
-				spellcheck="false"
-				placeholder="Username"
-			/>
-		</fieldset>
-
-		<fieldset>
-			<legend id="botApiLegend"></legend>
-			<div>
-				<label id="botTokenLabel"></label>
+		<div class="fieldset-row">
+			<fieldset>
+				<legend id="telegramDesktopLegend"></legend>
+				<label id="telegramAliasLabel"></label>
 				<input
-					id="token"
-					type="password"
-					autocapitalize="none"
-					spellcheck="false"
-					autocorrect="off"
-					placeholder="123456789:ABCdefGhIJKlmnoPQRstuVWXyZ"
-				/>
-			</div>
-
-			<div>
-				<label id="chatIdLabel"></label>
-				<input
-					id="chat_id"
+					id="telegram_username"
 					type="text"
 					autocapitalize="none"
 					autocorrect="off"
 					spellcheck="false"
-					placeholder="123456789"
+					placeholder="Username"
 				/>
-			</div>
-		</fieldset>
-
+			</fieldset>
+			<fieldset>
+				<legend id="botApiLegend"></legend>
+				<div>
+					<label id="botTokenLabel"></label>
+					<input
+						id="token"
+						type="password"
+						autocapitalize="none"
+						spellcheck="false"
+						autocorrect="off"
+						placeholder="123456789:ABCdefGhIJKlmnoPQRstuVWXyZ"
+					/>
+				</div>
+				<div>
+					<label id="chatIdLabel"></label>
+					<input
+						id="chat_id"
+						type="text"
+						autocapitalize="none"
+						autocorrect="off"
+						spellcheck="false"
+						placeholder="123456789"
+					/>
+					<div id="chatIdPreviewContainer">
+						<img
+							id="chatIdPhoto"
+						/>
+						<span
+							id="chatIdPreview"
+						></span>
+					</div>
+				</div>
+			</fieldset>
+		</div>
 		<button id="saveButton" type="button"></button>
 
 		<script src="options.js"></script>

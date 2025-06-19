@@ -55,5 +55,14 @@
   },
   "botApiError": {
     "message": "Error enviando con Bot API."
+  },
+  "loadingPreview": {
+    "message": "Cargando vista previa..."
+  },
+  "previewLabel": {
+    "message": "Vista previa:"
+  },
+  "invalidChatId": {
+    "message": "ID inválido o sin acceso."
   }
 }
