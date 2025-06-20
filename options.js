@@ -11,7 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
         chatIdInput: document.getElementById("chat_id"),
         chatIdPreview: document.getElementById("chatIdPreview"),
         chatIdPhoto: document.getElementById("chatIdPhoto"),
-        saveButton: document.getElementById("saveButton")
+        saveButton: document.getElementById("saveButton"),
+        botPreview: document.getElementById("botPreview")
     };
 
     // Set texts
@@ -33,6 +34,9 @@ document.addEventListener("DOMContentLoaded", () => {
         elements.telegramUsernameInput.value = result.telegram_username || "";
         if (result.token && result.chat_id) {
             updateChatPreview(result.token, result.chat_id);
+        }
+        if (result.token) {
+            updateBotPreview(result.token);
         }
     });
 
@@ -120,6 +124,48 @@ document.addEventListener("DOMContentLoaded", () => {
             renderChatPreview({ state: "success", name, photoUrl });
         } catch {
             renderChatPreview({ state: "error" });
+        }
+    }
+
+    // Preview del bot al cambiar el token
+    let botPreviewTimeout;
+    elements.tokenInput.addEventListener("input", onBotTokenChange);
+
+    function onBotTokenChange() {
+        clearTimeout(botPreviewTimeout);
+        botPreviewTimeout = setTimeout(() => {
+            const token = elements.tokenInput.value.trim();
+            if (token) {
+                updateBotPreview(token);
+            } else {
+                renderBotPreview({ state: "empty" });
+            }
+        }, 500);
+    }
+
+    function renderBotPreview({ state, name = "" }) {
+        if (state === "loading") {
+            elements.botPreview.textContent = chrome.i18n.getMessage("loadingPreview");
+        } else if (state === "success") {
+            elements.botPreview.textContent = `${chrome.i18n.getMessage("previewLabel")} ${name}`;
+        } else if (state === "error") {
+            elements.botPreview.textContent = chrome.i18n.getMessage("invalidBotToken");
+        } else {
+            elements.botPreview.textContent = "";
+        }
+    }
+
+    async function updateBotPreview(token) {
+        renderBotPreview({ state: "loading" });
+        try {
+            const res = await fetch(`https://api.telegram.org/bot${token}/getMe`);
+            const data = await res.json();
+            if (!data.ok) throw new Error();
+            const bot = data.result;
+            const name = bot.first_name + (bot.username ? ` (@${bot.username})` : "");
+            renderBotPreview({ state: "success", name });
+        } catch {
+            renderBotPreview({ state: "error" });
         }
     }
 });
