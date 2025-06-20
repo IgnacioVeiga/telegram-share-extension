@@ -16,12 +16,12 @@ chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
         id: "sendToTelegramDesktop",
         title: chrome.i18n.getMessage("sendDesktop"),
-        contexts: ["page", "link", "image"]
+        contexts: ["page", "link", "selection", "image", "video", "audio"]
     });
     chrome.contextMenus.create({
         id: "sendToTelegramBot",
         title: chrome.i18n.getMessage("sendBot"),
-        contexts: ["page", "link", "image"]
+        contexts: ["page", "link", "selection", "image", "video", "audio"]
     });
 });
 
@@ -50,14 +50,38 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
                 showError(chrome.i18n.getMessage("noTokenError"));
                 return;
             }
-            fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+
+            // Determinar el tipo de contenido y el endpoint de Telegram
+            let endpoint = "sendMessage";
+            let payload = { chat_id };
+            let fetchOptions = {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    chat_id: chat_id,
-                    text: content
-                })
-            })
+                headers: { "Content-Type": "application/json" }
+            };
+
+            if (info.mediaType === "image" && info.srcUrl) {
+                endpoint = "sendPhoto";
+                payload.photo = info.srcUrl;
+            } else if (info.mediaType === "audio" && info.srcUrl) {
+                endpoint = "sendAudio";
+                payload.audio = info.srcUrl;
+            } else if (info.mediaType === "video" && info.srcUrl) {
+                endpoint = "sendVideo";
+                payload.video = info.srcUrl;
+            } else if (info.selectionText) {
+                payload.text = info.selectionText;
+            } else if (info.linkUrl) {
+                payload.text = info.linkUrl;
+            } else if (info.pageUrl) {
+                payload.text = info.pageUrl;
+            } else {
+                showError(chrome.i18n.getMessage("noContentError"));
+                return;
+            }
+
+            fetchOptions.body = JSON.stringify(payload);
+
+            fetch(`https://api.telegram.org/bot${token}/${endpoint}`, fetchOptions)
                 .then(res => {
                     if (!res.ok) throw new Error(chrome.i18n.getMessage("botApiError"));
                 })
