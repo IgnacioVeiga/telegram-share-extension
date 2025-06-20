@@ -64,5 +64,23 @@
   },
   "invalidChatId": {
     "message": "ID inválido o sin acceso."
+  },
+  "image": {
+    "message": "Imagen"
+  },
+  "video": {
+    "message": "Video"
+  },
+  "audio": {
+    "message": "Audio"
+  },
+  "selection": {
+    "message": "Texto seleccionado"
+  },
+  "link": {
+    "message": "Enlace"
+  },
+  "page": {
+    "message": "Página"
   }
 }

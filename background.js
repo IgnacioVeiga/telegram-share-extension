@@ -18,10 +18,48 @@ chrome.runtime.onInstalled.addListener(() => {
         title: chrome.i18n.getMessage("sendDesktop"),
         contexts: ["page", "link", "selection", "image", "video", "audio"]
     });
+    // Menú padre para Bot API
     chrome.contextMenus.create({
         id: "sendToTelegramBot",
         title: chrome.i18n.getMessage("sendBot"),
-        contexts: ["page", "link", "selection", "image", "video", "audio"]
+        contexts: ["all"]
+    });
+    // Submenús según el contexto
+    chrome.contextMenus.create({
+        id: "sendToTelegramBot_image",
+        parentId: "sendToTelegramBot",
+        title: chrome.i18n.getMessage("image"),
+        contexts: ["image"]
+    });
+    chrome.contextMenus.create({
+        id: "sendToTelegramBot_video",
+        parentId: "sendToTelegramBot",
+        title: chrome.i18n.getMessage("video"),
+        contexts: ["video"]
+    });
+    chrome.contextMenus.create({
+        id: "sendToTelegramBot_audio",
+        parentId: "sendToTelegramBot",
+        title: chrome.i18n.getMessage("audio"),
+        contexts: ["audio"]
+    });
+    chrome.contextMenus.create({
+        id: "sendToTelegramBot_selection",
+        parentId: "sendToTelegramBot",
+        title: chrome.i18n.getMessage("selection"),
+        contexts: ["selection"]
+    });
+    chrome.contextMenus.create({
+        id: "sendToTelegramBot_link",
+        parentId: "sendToTelegramBot",
+        title: chrome.i18n.getMessage("link"),
+        contexts: ["link"]
+    });
+    chrome.contextMenus.create({
+        id: "sendToTelegramBot_page",
+        parentId: "sendToTelegramBot",
+        title: chrome.i18n.getMessage("page"),
+        contexts: ["page"]
     });
 });
 
@@ -45,42 +83,38 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
             chrome.tabs.create({ url: desktopUrl });
         }
 
-        if (info.menuItemId === "sendToTelegramBot") {
+        // Submenús Bot API
+        if (info.menuItemId.startsWith("sendToTelegramBot")) {
             if (!token || !chat_id) {
                 showError(chrome.i18n.getMessage("noTokenError"));
                 return;
             }
-
-            // Determinar el tipo de contenido y el endpoint de Telegram
             let endpoint = "sendMessage";
             let payload = { chat_id };
             let fetchOptions = {
                 method: "POST",
                 headers: { "Content-Type": "application/json" }
             };
-
-            if (info.mediaType === "image" && info.srcUrl) {
+            if (info.menuItemId === "sendToTelegramBot_image" && info.srcUrl) {
                 endpoint = "sendPhoto";
                 payload.photo = info.srcUrl;
-            } else if (info.mediaType === "audio" && info.srcUrl) {
+            } else if (info.menuItemId === "sendToTelegramBot_audio" && info.srcUrl) {
                 endpoint = "sendAudio";
                 payload.audio = info.srcUrl;
-            } else if (info.mediaType === "video" && info.srcUrl) {
+            } else if (info.menuItemId === "sendToTelegramBot_video" && info.srcUrl) {
                 endpoint = "sendVideo";
                 payload.video = info.srcUrl;
-            } else if (info.selectionText) {
+            } else if (info.menuItemId === "sendToTelegramBot_selection" && info.selectionText) {
                 payload.text = info.selectionText;
-            } else if (info.linkUrl) {
+            } else if (info.menuItemId === "sendToTelegramBot_link" && info.linkUrl) {
                 payload.text = info.linkUrl;
-            } else if (info.pageUrl) {
+            } else if (info.menuItemId === "sendToTelegramBot_page" && info.pageUrl) {
                 payload.text = info.pageUrl;
             } else {
                 showError(chrome.i18n.getMessage("noContentError"));
                 return;
             }
-
             fetchOptions.body = JSON.stringify(payload);
-
             fetch(`https://api.telegram.org/bot${token}/${endpoint}`, fetchOptions)
                 .then(res => {
                     if (!res.ok) throw new Error(chrome.i18n.getMessage("botApiError"));
