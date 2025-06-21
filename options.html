@@ -2,7 +2,7 @@
 <html lang="es">
 	<head>
 		<meta charset="UTF-8" />
-		<title>Configuración</title>
+		<title>Telegram Share Extension</title>
 		<meta
 			name="viewport"
 			content="width=device-width, initial-scale=1.0"
@@ -14,47 +14,57 @@
 	</head>
 
 	<body>
-		<h1>Configuración</h1>
-
-		<fieldset>
-			<legend>Telegram Desktop</legend>
-			<label>Alias de usuario/grupo/canal (sin @)</label>
-			<input
-				id="telegram_username"
-				type="text"
-				title="Nombre de usuario, grupo o canal de Telegram sin el @"
-				autocapitalize="none"
-				autocorrect="off"
-				spellcheck="false"
-				placeholder="Ej: MiCanalCool"
-			/>
-		</fieldset>
-
-		<fieldset>
-			<legend>Bot API</legend>
-			<div>
-				<label>Token del Bot</label>
+		<h1 id="settingsTitle"></h1>
+		<div class="fieldset-row">
+			<fieldset>
+				<legend id="telegramDesktopLegend"></legend>
+				<label id="telegramAliasLabel"></label>
 				<input
-					id="token"
-					type="password"
-				/>
-			</div>
-
-			<div>
-				<label>Chat ID</label>
-				<input
-					id="chat_id"
+					id="telegram_username"
 					type="text"
 					autocapitalize="none"
 					autocorrect="off"
 					spellcheck="false"
-					placeholder="Ej: 123456789"
-					title="ID del chat donde se enviarán los mensajes"
+					placeholder="Username"
 				/>
-			</div>
-		</fieldset>
-
-		<button id="save" title="Guardar configuración" type="button">Guardar</button>
+			</fieldset>
+			<fieldset>
+				<legend id="botApiLegend"></legend>
+				<div>
+					<label id="botTokenLabel"></label>
+					<input
+						id="token"
+						type="password"
+						autocapitalize="none"
+						spellcheck="false"
+						autocorrect="off"
+						placeholder="123456789:ABCdefGhIJKlmnoPQRstuVWXyZ"
+					/>
+					<div id="botPreviewContainer">
+						<span id="botPreview"></span>
+					</div>
+				</div>
+				<div>
+					<label id="chatIdLabel"></label>
+					<input
+						id="chat_id"
+						type="text"
+						autocapitalize="none"
+						autocorrect="off"
+						spellcheck="false"
+						placeholder="123456789"
+					/>
+					<div id="chatIdPreviewContainer">
+						<img id="chatIdPhoto" />
+						<span id="chatIdPreview"></span>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<button
+			id="saveButton"
+			type="button"
+		></button>
 
 		<script src="options.js"></script>
 	</body>
