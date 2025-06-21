@@ -1,3 +1,4 @@
+// Utilidades de notificación y errores
 function showError(message) {
     if (chrome.notifications) {
         chrome.notifications.create({
@@ -12,61 +13,79 @@ function showError(message) {
     }
 }
 
-chrome.runtime.onInstalled.addListener(() => {
+// Manejo de errores de promesas
+async function safeAsync(fn) {
+    try {
+        await fn();
+    } catch (err) {
+        showError(err && err.message ? err.message : chrome.i18n.getMessage("unknownError"));
+    }
+}
+
+// Utilidades para menús contextuales
+function createContextMenus() {
     chrome.contextMenus.create({
         id: "sendToTelegramDesktop",
         title: chrome.i18n.getMessage("sendDesktop"),
         contexts: ["page", "link", "selection", "image", "video", "audio"]
     });
-    // Menú padre para Bot API
     chrome.contextMenus.create({
         id: "sendToTelegramBot",
         title: chrome.i18n.getMessage("sendBot"),
         contexts: ["all"]
     });
-    // Submenús según el contexto
-    chrome.contextMenus.create({
-        id: "sendToTelegramBot_image",
-        parentId: "sendToTelegramBot",
-        title: chrome.i18n.getMessage("image"),
-        contexts: ["image"]
+    [
+        { id: "image", context: "image" },
+        { id: "video", context: "video" },
+        { id: "audio", context: "audio" },
+        { id: "selection", context: "selection" },
+        { id: "link", context: "link" },
+        { id: "page", context: "page" }
+    ].forEach(({ id, context }) => {
+        chrome.contextMenus.create({
+            id: `sendToTelegramBot_${id}`,
+            parentId: "sendToTelegramBot",
+            title: chrome.i18n.getMessage(id),
+            contexts: [context]
+        });
     });
-    chrome.contextMenus.create({
-        id: "sendToTelegramBot_video",
-        parentId: "sendToTelegramBot",
-        title: chrome.i18n.getMessage("video"),
-        contexts: ["video"]
-    });
-    chrome.contextMenus.create({
-        id: "sendToTelegramBot_audio",
-        parentId: "sendToTelegramBot",
-        title: chrome.i18n.getMessage("audio"),
-        contexts: ["audio"]
-    });
-    chrome.contextMenus.create({
-        id: "sendToTelegramBot_selection",
-        parentId: "sendToTelegramBot",
-        title: chrome.i18n.getMessage("selection"),
-        contexts: ["selection"]
-    });
-    chrome.contextMenus.create({
-        id: "sendToTelegramBot_link",
-        parentId: "sendToTelegramBot",
-        title: chrome.i18n.getMessage("link"),
-        contexts: ["link"]
-    });
-    chrome.contextMenus.create({
-        id: "sendToTelegramBot_page",
-        parentId: "sendToTelegramBot",
-        title: chrome.i18n.getMessage("page"),
-        contexts: ["page"]
-    });
+}
+
+// Utilidades para construir payloads de Telegram
+function buildTelegramPayload(menuItemId, info, chat_id) {
+    let endpoint = "sendMessage";
+    let payload = { chat_id };
+    if (menuItemId === "sendToTelegramBot_image" && info.srcUrl) {
+        endpoint = "sendPhoto";
+        payload.photo = info.srcUrl;
+    } else if (menuItemId === "sendToTelegramBot_audio" && info.srcUrl) {
+        endpoint = "sendAudio";
+        payload.audio = info.srcUrl;
+    } else if (menuItemId === "sendToTelegramBot_video" && info.srcUrl) {
+        endpoint = "sendVideo";
+        payload.video = info.srcUrl;
+    } else if (menuItemId === "sendToTelegramBot_selection" && info.selectionText) {
+        payload.text = info.selectionText;
+    } else if (menuItemId === "sendToTelegramBot_link" && info.linkUrl) {
+        payload.text = info.linkUrl;
+    } else if (menuItemId === "sendToTelegramBot_page" && info.pageUrl) {
+        payload.text = info.pageUrl;
+    } else {
+        return null;
+    }
+    return { endpoint, payload };
+}
+
+// Registro de menús al instalar
+chrome.runtime.onInstalled.addListener(() => {
+    createContextMenus();
 });
 
+// Manejo de clicks en menús contextuales
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-    const content = info.linkUrl || info.srcUrl || info.pageUrl;
-
-    chrome.storage.local.get(["token", "chat_id", "telegram_username"], (result) => {
+    safeAsync(async () => {
+        const content = info.linkUrl || info.srcUrl || info.pageUrl;
+        const result = await new Promise(resolve => chrome.storage.local.get(["token", "chat_id", "telegram_username"], resolve));
         const { token, chat_id, telegram_username } = result;
 
         if (!content) {
@@ -81,47 +100,27 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
             }
             const desktopUrl = `tg://resolve?domain=${telegram_username}&text=${encodeURIComponent(content)}`;
             chrome.tabs.create({ url: desktopUrl });
+            return;
         }
 
-        // Submenús Bot API
         if (info.menuItemId.startsWith("sendToTelegramBot")) {
             if (!token || !chat_id) {
                 showError(chrome.i18n.getMessage("noTokenError"));
                 return;
             }
-            let endpoint = "sendMessage";
-            let payload = { chat_id };
-            let fetchOptions = {
-                method: "POST",
-                headers: { "Content-Type": "application/json" }
-            };
-            if (info.menuItemId === "sendToTelegramBot_image" && info.srcUrl) {
-                endpoint = "sendPhoto";
-                payload.photo = info.srcUrl;
-            } else if (info.menuItemId === "sendToTelegramBot_audio" && info.srcUrl) {
-                endpoint = "sendAudio";
-                payload.audio = info.srcUrl;
-            } else if (info.menuItemId === "sendToTelegramBot_video" && info.srcUrl) {
-                endpoint = "sendVideo";
-                payload.video = info.srcUrl;
-            } else if (info.menuItemId === "sendToTelegramBot_selection" && info.selectionText) {
-                payload.text = info.selectionText;
-            } else if (info.menuItemId === "sendToTelegramBot_link" && info.linkUrl) {
-                payload.text = info.linkUrl;
-            } else if (info.menuItemId === "sendToTelegramBot_page" && info.pageUrl) {
-                payload.text = info.pageUrl;
-            } else {
+            const built = buildTelegramPayload(info.menuItemId, info, chat_id);
+            if (!built) {
                 showError(chrome.i18n.getMessage("noContentError"));
                 return;
             }
-            fetchOptions.body = JSON.stringify(payload);
-            fetch(`https://api.telegram.org/bot${token}/${endpoint}`, fetchOptions)
-                .then(res => {
-                    if (!res.ok) throw new Error(chrome.i18n.getMessage("botApiError"));
-                })
-                .catch(err => {
-                    showError(err.message);
-                });
+            const { endpoint, payload } = built;
+            const fetchOptions = {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            };
+            const res = await fetch(`https://api.telegram.org/bot${token}/${endpoint}`, fetchOptions);
+            if (!res.ok) throw new Error(chrome.i18n.getMessage("botApiError"));
         }
     });
 });
