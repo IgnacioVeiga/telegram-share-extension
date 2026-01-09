@@ -1,4 +1,4 @@
-// Utilidades de notificación y errores
+// Notification and error utilities
 function showError(message) {
     if (chrome.notifications) {
         chrome.notifications.create({
@@ -13,7 +13,7 @@ function showError(message) {
     }
 }
 
-// Manejo de errores de promesas
+// Promise error handling
 async function safeAsync(fn) {
     try {
         await fn();
@@ -22,7 +22,7 @@ async function safeAsync(fn) {
     }
 }
 
-// Utilidades para menús contextuales
+// Context menu utilities
 function createContextMenus() {
     chrome.contextMenus.create({
         id: "sendToTelegramDesktop",
@@ -51,7 +51,7 @@ function createContextMenus() {
     });
 }
 
-// Utilidades para construir payloads de Telegram
+// Utilities to build Telegram payloads
 function buildTelegramPayload(menuItemId, info, chat_id) {
     let endpoint = "sendMessage";
     let payload = { chat_id };
@@ -76,12 +76,12 @@ function buildTelegramPayload(menuItemId, info, chat_id) {
     return { endpoint, payload };
 }
 
-// Registro de menús al instalar
+// Register context menus on install
 chrome.runtime.onInstalled.addListener(() => {
     createContextMenus();
 });
 
-// Manejo de clicks en menús contextuales
+// Context menu click handler
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     safeAsync(async () => {
         const content = info.linkUrl || info.srcUrl || info.pageUrl;

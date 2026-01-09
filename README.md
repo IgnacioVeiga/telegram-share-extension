@@ -3,7 +3,7 @@
 A Chrome extension that allows you to share links, images, and text to Telegram directly from your browser.  
 You can choose between using **Telegram Desktop** or the **Telegram Bot API** to send content.
 
-## 📦 Features
+## Features
 
 - Share links, images, and text from the context menu.
 - Choose your preferred method: **Telegram Desktop** or **Bot API**.
@@ -12,32 +12,32 @@ You can choose between using **Telegram Desktop** or the **Telegram Bot API** to
 - Modern, clean UI for settings.
 - Local storage of settings (no external server involved).
 
-## 📑 Privacy Policy
+## Privacy Policy
 
 This extension does **not** collect, store, or share any personal data externally.  
 All configuration data is stored locally in your browser.
 
 See the [Privacy Policy](privacy_policy.md) for more details.
 
-## ⚠️ Disclaimer
+## Disclaimer
 
 This extension is an unofficial tool and is not affiliated, associated, authorized, endorsed by, or in any way officially connected with **Telegram Messenger LLP**.
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.  
 See the [LICENSE](LICENSE) file for full details.
 
 ---
 
-## 🌍 Languages
+## Languages
 
 The source code and interface are currently in **Spanish**.  
 An English translation and multilingual support are planned for future releases.
 
 ---
 
-## 🚀 Install
+## Install
 
 For now, you can load the extension manually:
 
@@ -50,20 +50,20 @@ A Chrome Web Store release is planned.
 
 ---
 
-## 📚 Contribution Guide
+## Contribution Guide
 
 See the [Contributing Guidelines](CONTRIBUTING.md) for details.
 
 ---
 
-## 📬 Contact
+## Contact
 
 For issues or suggestions, feel free to open an issue or contact the developer.
 
 ---
 
-## 📚 Documentation in other languages
+## Documentation in other languages
 
 This README is also available in other languages:
 
-- 📖 [Versión Español](README.es.md)
+- [Versión Español](README.es.md)
