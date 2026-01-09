@@ -1,10 +1,10 @@
-# 🌐 Internationalization (i18n) Guide
+# Internationalization (i18n) Guide
 
 This extension supports multiple languages through the native Chrome Extensions internationalization system.
 
 ---
 
-## 📦 Folder structure
+## Folder structure
 
 ```
 _locales
@@ -18,7 +18,7 @@ _locales
 
 ---
 
-## 📜 messages.json format
+## messages.json format
 
 Each `messages.json` must follow this structure:
 
@@ -43,7 +43,7 @@ You can optionally add a "description" field for context:
 
 ---
 
-## 📌 Adding a new language
+## Adding a new language
 
 1. Create a folder inside `_locales` named with the language code.
 2. Copy a `messages.json` template and translate the texts.
@@ -51,7 +51,7 @@ You can optionally add a "description" field for context:
 
 ---
 
-## 📖 Dynamic text loading
+## Dynamic text loading
 Use `chrome.i18n.getMessage("keyName")` to retrieve translated strings.
 
 Example:
@@ -63,14 +63,14 @@ element.setAttribute("title", chrome.i18n.getMessage("tooltipText"));
 
 ---
 
-## 📋 Elements to translate
+## Elements to translate
 - Visible texts (`innerText`, `textContent`, `value`)
 - Attributes (`title`, `placeholder`, `alt`)
 - Context menu items in `background.js`
 
 ---
 
-# 📃 Notifications & errors
+# Notifications & errors
 Use `i18n` for notification titles and messages:
 
 ```javascript
@@ -84,23 +84,23 @@ chrome.notifications.create({
 
 ---
 
-## 📌 Limitations
+## Limitations
 - You can't translate static HTML without JavaScript.
 - You can't change the browser’s language from the extension.
 
 ---
 
-## 📚 Official documentation
+## Official documentation
 [Chrome i18n API](https://developer.chrome.com/docs/extensions/reference/i18n/)
 
 ---
 
-## ✅ Available languages
+## Available languages
 - English (en)
 - Spanish (es)
 - [Add more by creating a folder in `_locales/`]
 
 ---
 
-💡 Want to contribute a translation? Just copy any existing `messages.json`, translate it, and place it inside a new `_locales/<lang>` folder.
+Want to contribute a translation? Just copy any existing `messages.json`, translate it, and place it inside a new `_locales/<lang>` folder.
 

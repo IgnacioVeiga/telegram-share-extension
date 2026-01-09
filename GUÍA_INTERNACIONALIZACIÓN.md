@@ -1,10 +1,10 @@
-# 🌐 Guía de Internacionalización (i18n)
+# Guía de Internacionalización (i18n)
 
 Esta extensión es compatible con múltiples idiomas gracias al sistema de internacionalización nativo de Chrome Extensions.
 
 ---
 
-## 📦 Folder structure
+## Folder structure
 
 ```
 _locales
@@ -18,7 +18,7 @@ _locales
 
 ---
 
-## 📜 Formato de messages.json
+## Formato de messages.json
 
 Cada archivo `messages.json` debe seguir esta estructura:
 
@@ -43,7 +43,7 @@ Podés agregar un campo "description" para contexto si querés:
 
 ---
 
-## 📌 Agregar un nuevo idioma
+## Agregar un nuevo idioma
 
 1. Crear una carpeta dentro de `_locales` con el código de idioma.
 2. Copiar el archivo `messages.json` de otro idioma y traducir los textos.
@@ -51,7 +51,7 @@ Podés agregar un campo "description" para contexto si querés:
 
 ---
 
-## 📖 Carga dinámica de textos
+## Carga dinámica de textos
 Usá `chrome.i18n.getMessage("clave")` para acceder a los textos traducidos.
 
 Ejemplo:
@@ -63,14 +63,14 @@ element.setAttribute("title", chrome.i18n.getMessage("tooltipText"));
 
 ---
 
-## 📋 Elementos que deben traducirse
+## Elementos que deben traducirse
 - Textos visibles (`innerText`, `textContent`, `value`)
 - Atributos (`title`, `placeholder`, `alt`)
 - Ítems del menú contextual en `background.js`
 
 ---
 
-# 📃 Notificaciones y errores
+# Notificaciones y errores
 También se deben traducir con `i18n`:
 
 ```javascript
@@ -84,23 +84,23 @@ chrome.notifications.create({
 
 ---
 
-## 📌 Limitaciones
+## Limitaciones
 - No se puede traducir HTML estático sin JavaScript.
 - No se puede cambiar el idioma del navegador desde la extensión.
 
 ---
 
-## 📚 Documentación oficial
+## Documentación oficial
 [Chrome i18n API](https://developer.chrome.com/docs/extensions/reference/i18n/)
 
 ---
 
-## ✅ Idiomas disponibles
+## Idiomas disponibles
 - Español (es)
 - Inglés (en)
 - [Agregá más creando una carpeta en `_locales/`]
 
 ---
 
-💡 ¿Querés contribuir con otro idioma? Copiá un `messages.json`, traducilo y ponelo en una carpeta `_locales/<idioma>`.
+¿Querés contribuir con otro idioma? Copiá un `messages.json`, traducilo y ponelo en una carpeta `_locales/<idioma>`.
 
