@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Vista previa del usuario/chat al cambiar chat_id o token
+    // User/chat preview when chat_id or token change
     let chatPreviewTimeout;
     elements.chatIdInput.addEventListener("input", onChatIdOrTokenChange);
     elements.tokenInput.addEventListener("input", onChatIdOrTokenChange);
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Preview del bot al cambiar el token
+    // Bot preview when the token changes
     let botPreviewTimeout;
     elements.tokenInput.addEventListener("input", onBotTokenChange);
 
