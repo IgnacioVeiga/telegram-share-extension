@@ -6,8 +6,9 @@ Podés elegir entre usar **Telegram Desktop** o la **Telegram Bot API** para env
 ## Funcionalidades
 
 - Compartir enlaces, imágenes y texto desde el menú contextual.
-- Elegir el método preferido: **Telegram Desktop** o **Bot API**.
-- Configurar el token del Bot API, el chat ID y las preferencias desde la página de opciones.
+- Elegir el método de envío directamente desde el menú contextual: **Telegram Desktop** o **Bot API**.
+- Configurar alias de Telegram, token del Bot API y chat ID desde la página de opciones.
+- Vista previa en vivo para validar token del bot y chat ID desde la configuración.
 - Notificaciones en caso de éxito o error.
 - Interfaz moderna y limpia para la configuración.
 - Almacenamiento de configuraciones de forma local (sin servidores externos).
@@ -15,7 +16,8 @@ Podés elegir entre usar **Telegram Desktop** o la **Telegram Bot API** para env
 ## Política de Privacidad
 
 Esta extensión **no** recolecta, almacena ni comparte datos personales de forma externa.  
-Toda la configuración se guarda de manera local en tu navegador.
+Toda la configuración se guarda de manera local en tu navegador.  
+Cuando usás las vistas previas de validación en configuración, la extensión envía solicitudes a las APIs de Telegram (`getMe`, `getChat`, `getFile`) para mostrar datos de bot/chat.
 
 Consultá la [Política de Privacidad](privacy_policy.es.md) para más detalles.
 
@@ -32,8 +34,11 @@ Consultá el archivo [LICENSE](LICENSE) para más detalles.
 
 ## Idiomas
 
-El código fuente y la interfaz están actualmente en **español**.  
-Está prevista una versión en inglés y soporte multilenguaje en futuras actualizaciones.
+La extensión incluye actualmente traducciones de interfaz para:
+- Español (`es`)
+- Inglés (`en`)
+
+Podés agregar más idiomas usando la estructura i18n descrita en [GUÍA_INTERNACIONALIZACIÓN.md](GUÍA_INTERNACIONALIZACIÓN.md).
 
 ---
 

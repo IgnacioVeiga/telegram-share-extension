@@ -2,6 +2,9 @@
   "extensionName": {
     "message": "Telegram Share Extension"
   },
+  "extensionDescription": {
+    "message": "Share links, media, and selected text to Telegram from the browser context menu."
+  },
   "settingsTitle": {
     "message": "Settings"
   },
@@ -14,17 +17,29 @@
   "telegramAliasTitle": {
     "message": "Telegram user, group or channel name without the @"
   },
+  "telegramAliasPlaceholder": {
+    "message": "username_or_channel"
+  },
   "botApiLegend": {
     "message": "Bot API"
   },
   "botTokenLabel": {
     "message": "Bot Token"
   },
+  "botTokenPlaceholder": {
+    "message": "123456789:ABCdefGhIJKlmnoPQRstuVWXyZ"
+  },
   "chatIdLabel": {
     "message": "Chat ID"
   },
   "chatIdTitle": {
     "message": "ID of the chat where messages will be sent"
+  },
+  "chatIdPlaceholder": {
+    "message": "123456789"
+  },
+  "chatPhotoAlt": {
+    "message": "Chat profile photo preview"
   },
   "saveButton": {
     "message": "Save"
@@ -44,6 +59,9 @@
   "errorTitle": {
     "message": "Telegram Share Error"
   },
+  "successTitle": {
+    "message": "Telegram Share"
+  },
   "noContentError": {
     "message": "No content to send."
   },
@@ -55,6 +73,12 @@
   },
   "botApiError": {
     "message": "Error sending via Bot API."
+  },
+  "desktopSendStarted": {
+    "message": "Opened Telegram Desktop to finish sending."
+  },
+  "botSendSuccess": {
+    "message": "Content sent via Bot API."
   },
   "unknownError": {
     "message": "Unexpected error."

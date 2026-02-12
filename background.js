@@ -1,19 +1,29 @@
-// Notification and error utilities
-function showError(message) {
-    if (chrome.notifications) {
-        chrome.notifications.create({
-            type: "basic",
-            iconUrl: "icons/icon128.png",
-            title: chrome.i18n.getMessage("errorTitle"),
-            message: message
-        });
-    } else {
-        console.error("Error: " + message);
-        alert("Error: " + message);
+const SETTINGS_KEYS = ["token", "chat_id", "telegram_username"];
+const TELEGRAM_API_BASE_URL = "https://api.telegram.org";
+
+function showNotification(title, message) {
+    if (!chrome.notifications) {
+        console.log(`${title}: ${message}`);
+        return;
     }
+
+    chrome.notifications.create({
+        type: "basic",
+        iconUrl: "icons/icon128.png",
+        title,
+        message
+    });
 }
 
-// Promise error handling
+function showError(message) {
+    showNotification(chrome.i18n.getMessage("errorTitle"), message);
+    console.error("Error: " + message);
+}
+
+function showSuccess(message) {
+    showNotification(chrome.i18n.getMessage("successTitle"), message);
+}
+
 async function safeAsync(fn) {
     try {
         await fn();
@@ -22,7 +32,6 @@ async function safeAsync(fn) {
     }
 }
 
-// Context menu utilities
 function createContextMenus() {
     chrome.contextMenus.create({
         id: "sendToTelegramDesktop",
@@ -34,6 +43,7 @@ function createContextMenus() {
         title: chrome.i18n.getMessage("sendBot"),
         contexts: ["all"]
     });
+
     [
         { id: "image", context: "image" },
         { id: "video", context: "video" },
@@ -51,10 +61,19 @@ function createContextMenus() {
     });
 }
 
-// Utilities to build Telegram payloads
+function resetContextMenus() {
+    return new Promise((resolve) => {
+        chrome.contextMenus.removeAll(() => {
+            createContextMenus();
+            resolve();
+        });
+    });
+}
+
 function buildTelegramPayload(menuItemId, info, chat_id) {
     let endpoint = "sendMessage";
     let payload = { chat_id };
+
     if (menuItemId === "sendToTelegramBot_image" && info.srcUrl) {
         endpoint = "sendPhoto";
         payload.photo = info.srcUrl;
@@ -73,6 +92,7 @@ function buildTelegramPayload(menuItemId, info, chat_id) {
     } else {
         return null;
     }
+
     return { endpoint, payload };
 }
 
@@ -80,53 +100,83 @@ function getContentFromContext(info) {
     return info.selectionText || info.linkUrl || info.srcUrl || info.pageUrl;
 }
 
-// Register context menus on install
-chrome.runtime.onInstalled.addListener(() => {
-    chrome.contextMenus.removeAll(() => {
-        createContextMenus();
+function getStoredSettings() {
+    return new Promise((resolve) => {
+        chrome.storage.local.get(SETTINGS_KEYS, resolve);
     });
+}
+
+async function sendToTelegramApi(token, endpoint, payload) {
+    const res = await fetch(`${TELEGRAM_API_BASE_URL}/bot${token}/${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    });
+
+    let data = null;
+    try {
+        data = await res.json();
+    } catch {
+        data = null;
+    }
+
+    if (!res.ok || !data || !data.ok) {
+        const detail = data && data.description ? ` ${data.description}` : "";
+        throw new Error(`${chrome.i18n.getMessage("botApiError")}${detail}`);
+    }
+}
+
+chrome.runtime.onInstalled.addListener(() => {
+    safeAsync(resetContextMenus);
 });
 
-// Context menu click handler
-chrome.contextMenus.onClicked.addListener((info, tab) => {
-    safeAsync(async () => {
-        const content = getContentFromContext(info);
-        const result = await new Promise(resolve => chrome.storage.local.get(["token", "chat_id", "telegram_username"], resolve));
-        const { token, chat_id, telegram_username } = result;
+chrome.runtime.onStartup.addListener(() => {
+    safeAsync(resetContextMenus);
+});
 
+chrome.contextMenus.onClicked.addListener((info) => {
+    safeAsync(async () => {
+        if (info.menuItemId === "sendToTelegramBot") {
+            return;
+        }
+
+        const content = getContentFromContext(info);
         if (!content) {
             showError(chrome.i18n.getMessage("noContentError"));
             return;
         }
+
+        const { token, chat_id, telegram_username } = await getStoredSettings();
 
         if (info.menuItemId === "sendToTelegramDesktop") {
             if (!telegram_username) {
                 showError(chrome.i18n.getMessage("noAliasError"));
                 return;
             }
+
             const desktopUrl = `tg://resolve?domain=${telegram_username}&text=${encodeURIComponent(content)}`;
             chrome.tabs.create({ url: desktopUrl });
+            showSuccess(chrome.i18n.getMessage("desktopSendStarted"));
             return;
         }
 
-        if (info.menuItemId.startsWith("sendToTelegramBot")) {
-            if (!token || !chat_id) {
-                showError(chrome.i18n.getMessage("noTokenError"));
-                return;
-            }
-            const built = buildTelegramPayload(info.menuItemId, info, chat_id);
-            if (!built) {
-                showError(chrome.i18n.getMessage("noContentError"));
-                return;
-            }
-            const { endpoint, payload } = built;
-            const fetchOptions = {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            };
-            const res = await fetch(`https://api.telegram.org/bot${token}/${endpoint}`, fetchOptions);
-            if (!res.ok) throw new Error(chrome.i18n.getMessage("botApiError"));
+        if (!info.menuItemId.startsWith("sendToTelegramBot")) {
+            return;
         }
+
+        if (!token || !chat_id) {
+            showError(chrome.i18n.getMessage("noTokenError"));
+            return;
+        }
+
+        const built = buildTelegramPayload(info.menuItemId, info, chat_id);
+        if (!built) {
+            showError(chrome.i18n.getMessage("noContentError"));
+            return;
+        }
+
+        const { endpoint, payload } = built;
+        await sendToTelegramApi(token, endpoint, payload);
+        showSuccess(chrome.i18n.getMessage("botSendSuccess"));
     });
 });
