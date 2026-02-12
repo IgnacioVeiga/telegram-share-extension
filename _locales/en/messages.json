@@ -56,6 +56,9 @@
   "botApiError": {
     "message": "Error sending via Bot API."
   },
+  "unknownError": {
+    "message": "Unexpected error."
+  },
   "loadingPreview": {
     "message": "Loading preview..."
   },
@@ -64,6 +67,9 @@
   },
   "invalidChatId": {
     "message": "Invalid ID or no access."
+  },
+  "invalidBotToken": {
+    "message": "Invalid bot token."
   },
   "image": {
     "message": "Image"

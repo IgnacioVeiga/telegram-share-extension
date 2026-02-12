@@ -76,15 +76,21 @@ function buildTelegramPayload(menuItemId, info, chat_id) {
     return { endpoint, payload };
 }
 
+function getContentFromContext(info) {
+    return info.selectionText || info.linkUrl || info.srcUrl || info.pageUrl;
+}
+
 // Register context menus on install
 chrome.runtime.onInstalled.addListener(() => {
-    createContextMenus();
+    chrome.contextMenus.removeAll(() => {
+        createContextMenus();
+    });
 });
 
 // Context menu click handler
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     safeAsync(async () => {
-        const content = info.linkUrl || info.srcUrl || info.pageUrl;
+        const content = getContentFromContext(info);
         const result = await new Promise(resolve => chrome.storage.local.get(["token", "chat_id", "telegram_username"], resolve));
         const { token, chat_id, telegram_username } = result;
 

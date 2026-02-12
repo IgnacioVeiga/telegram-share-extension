@@ -41,9 +41,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     elements.saveButton.addEventListener("click", () => {
-        const token = elements.tokenInput.value;
-        const chat_id = elements.chatIdInput.value;
-        const telegram_username = elements.telegramUsernameInput.value;
+        const token = elements.tokenInput.value.trim();
+        const chat_id = elements.chatIdInput.value.trim();
+        const telegram_username = elements.telegramUsernameInput.value.trim();
         if (telegram_username.includes("@")) {
             alert(chrome.i18n.getMessage("usernameError"));
             return;
