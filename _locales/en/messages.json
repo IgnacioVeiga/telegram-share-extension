@@ -2,6 +2,9 @@
   "extensionName": {
     "message": "Telegram Share Extension"
   },
+  "extensionDescription": {
+    "message": "Share links, media, and selected text to Telegram from the browser context menu."
+  },
   "settingsTitle": {
     "message": "Settings"
   },
@@ -14,11 +17,17 @@
   "telegramAliasTitle": {
     "message": "Telegram user, group or channel name without the @"
   },
+  "telegramAliasPlaceholder": {
+    "message": "username_or_channel"
+  },
   "botApiLegend": {
     "message": "Bot API"
   },
   "botTokenLabel": {
     "message": "Bot Token"
+  },
+  "botTokenPlaceholder": {
+    "message": "123456789:ABCdefGhIJKlmnoPQRstuVWXyZ"
   },
   "chatIdLabel": {
     "message": "Chat ID"
@@ -26,8 +35,26 @@
   "chatIdTitle": {
     "message": "ID of the chat where messages will be sent"
   },
+  "chatIdPlaceholder": {
+    "message": "123456789"
+  },
+  "chatPhotoAlt": {
+    "message": "Chat profile photo preview"
+  },
+  "testMessageLabel": {
+    "message": "Test message"
+  },
+  "testMessagePlaceholder": {
+    "message": "Write a test message to verify your setup"
+  },
   "saveButton": {
     "message": "Save"
+  },
+  "sendTestButton": {
+    "message": "Send test message"
+  },
+  "sendTestButtonSending": {
+    "message": "Sending..."
   },
   "savedMessage": {
     "message": "Configuration saved!"
@@ -38,11 +65,29 @@
   "sendDesktop": {
     "message": "Send via Telegram Desktop"
   },
+  "sendDefault": {
+    "message": "Quick send (default method)"
+  },
   "sendBot": {
     "message": "Send via Bot API"
   },
+  "defaultMethodLabel": {
+    "message": "Default method for quick send"
+  },
+  "defaultMethodDesktop": {
+    "message": "Desktop"
+  },
+  "defaultMethodBot": {
+    "message": "Bot API"
+  },
+  "defaultMethodHint": {
+    "message": "Used by the \"Quick send\" context menu item."
+  },
   "errorTitle": {
     "message": "Telegram Share Error"
+  },
+  "successTitle": {
+    "message": "Telegram Share"
   },
   "noContentError": {
     "message": "No content to send."
@@ -56,6 +101,24 @@
   "botApiError": {
     "message": "Error sending via Bot API."
   },
+  "desktopSendStarted": {
+    "message": "Opened Telegram Desktop to finish sending."
+  },
+  "botSendSuccess": {
+    "message": "Content sent via Bot API."
+  },
+  "defaultTestMessage": {
+    "message": "Telegram Share test message"
+  },
+  "testMessageSent": {
+    "message": "Test message sent successfully."
+  },
+  "testMessageFailed": {
+    "message": "Failed to send test message."
+  },
+  "unknownError": {
+    "message": "Unexpected error."
+  },
   "loadingPreview": {
     "message": "Loading preview..."
   },
@@ -64,6 +127,21 @@
   },
   "invalidChatId": {
     "message": "Invalid ID or no access."
+  },
+  "invalidBotToken": {
+    "message": "Invalid bot token."
+  },
+  "statusIdle": {
+    "message": "Idle"
+  },
+  "statusChecking": {
+    "message": "Checking"
+  },
+  "statusReady": {
+    "message": "Ready"
+  },
+  "statusError": {
+    "message": "Error"
   },
   "image": {
     "message": "Image"

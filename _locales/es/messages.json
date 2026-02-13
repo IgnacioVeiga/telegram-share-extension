@@ -2,6 +2,9 @@
   "extensionName": {
     "message": "Telegram Share Extension"
   },
+  "extensionDescription": {
+    "message": "Compartí enlaces, contenido multimedia y texto seleccionado a Telegram desde el menú contextual del navegador."
+  },
   "settingsTitle": {
     "message": "Configuración"
   },
@@ -14,11 +17,17 @@
   "telegramAliasTitle": {
     "message": "Nombre de usuario, grupo o canal de Telegram sin el @"
   },
+  "telegramAliasPlaceholder": {
+    "message": "usuario_o_canal"
+  },
   "botApiLegend": {
     "message": "Bot API"
   },
   "botTokenLabel": {
     "message": "Token del Bot"
+  },
+  "botTokenPlaceholder": {
+    "message": "123456789:ABCdefGhIJKlmnoPQRstuVWXyZ"
   },
   "chatIdLabel": {
     "message": "Chat ID"
@@ -26,8 +35,26 @@
   "chatIdTitle": {
     "message": "ID del chat donde se enviarán los mensajes"
   },
+  "chatIdPlaceholder": {
+    "message": "123456789"
+  },
+  "chatPhotoAlt": {
+    "message": "Vista previa de foto de perfil del chat"
+  },
+  "testMessageLabel": {
+    "message": "Mensaje de prueba"
+  },
+  "testMessagePlaceholder": {
+    "message": "Escribí un mensaje de prueba para validar la configuración"
+  },
   "saveButton": {
     "message": "Guardar"
+  },
+  "sendTestButton": {
+    "message": "Enviar mensaje de prueba"
+  },
+  "sendTestButtonSending": {
+    "message": "Enviando..."
   },
   "savedMessage": {
     "message": "¡Configuración guardada!"
@@ -38,11 +65,29 @@
   "sendDesktop": {
     "message": "Enviar por Telegram Desktop"
   },
+  "sendDefault": {
+    "message": "Envío rápido (método por defecto)"
+  },
   "sendBot": {
     "message": "Enviar por Bot API"
   },
+  "defaultMethodLabel": {
+    "message": "Método por defecto para envío rápido"
+  },
+  "defaultMethodDesktop": {
+    "message": "Desktop"
+  },
+  "defaultMethodBot": {
+    "message": "Bot API"
+  },
+  "defaultMethodHint": {
+    "message": "Se usa en la opción \"Envío rápido\" del menú contextual."
+  },
   "errorTitle": {
     "message": "Error de Telegram Share"
+  },
+  "successTitle": {
+    "message": "Telegram Share"
   },
   "noContentError": {
     "message": "No hay contenido para enviar."
@@ -56,6 +101,24 @@
   "botApiError": {
     "message": "Error enviando con Bot API."
   },
+  "desktopSendStarted": {
+    "message": "Se abrió Telegram Desktop para terminar el envío."
+  },
+  "botSendSuccess": {
+    "message": "Contenido enviado por Bot API."
+  },
+  "defaultTestMessage": {
+    "message": "Mensaje de prueba de Telegram Share"
+  },
+  "testMessageSent": {
+    "message": "Mensaje de prueba enviado correctamente."
+  },
+  "testMessageFailed": {
+    "message": "No se pudo enviar el mensaje de prueba."
+  },
+  "unknownError": {
+    "message": "Error inesperado."
+  },
   "loadingPreview": {
     "message": "Cargando vista previa..."
   },
@@ -64,6 +127,21 @@
   },
   "invalidChatId": {
     "message": "ID inválido o sin acceso."
+  },
+  "invalidBotToken": {
+    "message": "Token de bot inválido."
+  },
+  "statusIdle": {
+    "message": "Listo"
+  },
+  "statusChecking": {
+    "message": "Validando"
+  },
+  "statusReady": {
+    "message": "Correcto"
+  },
+  "statusError": {
+    "message": "Error"
   },
   "image": {
     "message": "Imagen"

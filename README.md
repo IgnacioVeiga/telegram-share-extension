@@ -6,8 +6,12 @@ You can choose between using **Telegram Desktop** or the **Telegram Bot API** to
 ## Features
 
 - Share links, images, and text from the context menu.
-- Choose your preferred method: **Telegram Desktop** or **Bot API**.
-- Configure your Bot API token, chat ID, and preferences from the options page.
+- Choose the sending method directly from the context menu: **Telegram Desktop** or **Bot API**.
+- Quick send item that uses your configured default method (**Desktop** or **Bot API**).
+- Configure Telegram alias, Bot API token, and chat ID from the options page.
+- Configure a default method for quick-send behavior from the options page.
+- Live preview for bot token and chat ID validation from the options page.
+- Inline test message sender to validate Bot API setup.
 - Notifications on successful or failed actions.
 - Modern, clean UI for settings.
 - Local storage of settings (no external server involved).
@@ -15,7 +19,8 @@ You can choose between using **Telegram Desktop** or the **Telegram Bot API** to
 ## Privacy Policy
 
 This extension does **not** collect, store, or share any personal data externally.  
-All configuration data is stored locally in your browser.
+All configuration data is stored locally in your browser.  
+When you use validation previews in settings, the extension sends requests to Telegram APIs (`getMe`, `getChat`, `getFile`) to display bot/chat info.
 
 See the [Privacy Policy](privacy_policy.md) for more details.
 
@@ -32,8 +37,11 @@ See the [LICENSE](LICENSE) file for full details.
 
 ## Languages
 
-The source code and interface are currently in **Spanish**.  
-An English translation and multilingual support are planned for future releases.
+The extension currently includes interface translations for:
+- English (`en`)
+- Spanish (`es`)
+
+Additional languages can be added using the i18n structure described in [INTERNATIONALIZATION_GUIDE.md](INTERNATIONALIZATION_GUIDE.md).
 
 ---
 
