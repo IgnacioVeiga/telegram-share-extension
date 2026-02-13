@@ -41,8 +41,20 @@
   "chatPhotoAlt": {
     "message": "Vista previa de foto de perfil del chat"
   },
+  "testMessageLabel": {
+    "message": "Mensaje de prueba"
+  },
+  "testMessagePlaceholder": {
+    "message": "Escribí un mensaje de prueba para validar la configuración"
+  },
   "saveButton": {
     "message": "Guardar"
+  },
+  "sendTestButton": {
+    "message": "Enviar mensaje de prueba"
+  },
+  "sendTestButtonSending": {
+    "message": "Enviando..."
   },
   "savedMessage": {
     "message": "¡Configuración guardada!"
@@ -80,6 +92,15 @@
   "botSendSuccess": {
     "message": "Contenido enviado por Bot API."
   },
+  "defaultTestMessage": {
+    "message": "Mensaje de prueba de Telegram Share"
+  },
+  "testMessageSent": {
+    "message": "Mensaje de prueba enviado correctamente."
+  },
+  "testMessageFailed": {
+    "message": "No se pudo enviar el mensaje de prueba."
+  },
   "unknownError": {
     "message": "Error inesperado."
   },
@@ -94,6 +115,18 @@
   },
   "invalidBotToken": {
     "message": "Token de bot inválido."
+  },
+  "statusIdle": {
+    "message": "Listo"
+  },
+  "statusChecking": {
+    "message": "Validando"
+  },
+  "statusReady": {
+    "message": "Correcto"
+  },
+  "statusError": {
+    "message": "Error"
   },
   "image": {
     "message": "Imagen"

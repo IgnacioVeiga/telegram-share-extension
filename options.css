@@ -11,14 +11,30 @@
     --button-bg: #137A7F;
     --button-bg-hover: #E12885;
     --button-text: #fff;
+    --status-idle-bg: rgba(255, 255, 255, 0.14);
+    --status-idle-text: #f2f2f2;
+    --status-loading-bg: rgba(255, 184, 0, 0.22);
+    --status-loading-text: #ffd77a;
+    --status-success-bg: rgba(37, 211, 102, 0.24);
+    --status-success-text: #8af7b0;
+    --status-error-bg: rgba(226, 40, 133, 0.24);
+    --status-error-text: #ff9fca;
+    --toast-success-border: #25D366;
+    --toast-error-border: #E12885;
+    --toast-info-border: #86CECB;
 }
 
-html body {
+html,
+body {
     height: 100%;
+}
+
+body {
     margin: 1rem;
     font-family: Arial, sans-serif;
     background-color: var(--primary-bg);
     color: var(--primary-text);
+    position: relative;
 }
 
 .fieldset-row {
@@ -47,14 +63,22 @@ legend {
     font-weight: bold;
 }
 
-input {
+input,
+textarea {
     width: 100%;
     max-width: 500px;
     padding: 8px;
     margin-top: 0.25rem;
     border: 1px solid var(--input-border);
+    border-radius: 8px;
     background-color: var(--primary-bg);
     color: var(--primary-text);
+}
+
+textarea {
+    min-height: 72px;
+    resize: vertical;
+    line-height: 1.35;
 }
 
 button {
@@ -62,11 +86,17 @@ button {
     color: var(--button-text);
     padding: 10px 1rem;
     border: none;
+    border-radius: 8px;
     cursor: pointer;
 }
 
 button:hover {
     background-color: var(--button-bg-hover);
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
 }
 
 #botPreviewContainer {
@@ -107,4 +137,95 @@ button:hover {
     object-fit: cover;
     background: #222;
     border: 2px solid var(--input-border);
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 92px;
+    min-height: 24px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    background: var(--status-idle-bg);
+    color: var(--status-idle-text);
+}
+
+.status-badge.is-loading {
+    background: var(--status-loading-bg);
+    color: var(--status-loading-text);
+}
+
+.status-badge.is-success {
+    background: var(--status-success-bg);
+    color: var(--status-success-text);
+}
+
+.status-badge.is-error {
+    background: var(--status-error-bg);
+    color: var(--status-error-text);
+}
+
+.test-send-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+#sendTestButton {
+    align-self: flex-start;
+}
+
+.toast-region {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: min(360px, calc(100vw - 28px));
+}
+
+.toast {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border-left: 4px solid var(--toast-info-border);
+    background: rgba(0, 0, 0, 0.45);
+    color: var(--primary-text);
+    font-size: 0.92rem;
+    line-height: 1.35;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.toast.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast.toast-success {
+    border-left-color: var(--toast-success-border);
+}
+
+.toast.toast-error {
+    border-left-color: var(--toast-error-border);
+}
+
+@media (max-width: 640px) {
+    .toast-region {
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+
+    .status-badge {
+        min-width: 80px;
+    }
 }

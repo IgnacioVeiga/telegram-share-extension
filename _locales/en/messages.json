@@ -41,8 +41,20 @@
   "chatPhotoAlt": {
     "message": "Chat profile photo preview"
   },
+  "testMessageLabel": {
+    "message": "Test message"
+  },
+  "testMessagePlaceholder": {
+    "message": "Write a test message to verify your setup"
+  },
   "saveButton": {
     "message": "Save"
+  },
+  "sendTestButton": {
+    "message": "Send test message"
+  },
+  "sendTestButtonSending": {
+    "message": "Sending..."
   },
   "savedMessage": {
     "message": "Configuration saved!"
@@ -80,6 +92,15 @@
   "botSendSuccess": {
     "message": "Content sent via Bot API."
   },
+  "defaultTestMessage": {
+    "message": "Telegram Share test message"
+  },
+  "testMessageSent": {
+    "message": "Test message sent successfully."
+  },
+  "testMessageFailed": {
+    "message": "Failed to send test message."
+  },
   "unknownError": {
     "message": "Unexpected error."
   },
@@ -94,6 +115,18 @@
   },
   "invalidBotToken": {
     "message": "Invalid bot token."
+  },
+  "statusIdle": {
+    "message": "Idle"
+  },
+  "statusChecking": {
+    "message": "Checking"
+  },
+  "statusReady": {
+    "message": "Ready"
+  },
+  "statusError": {
+    "message": "Error"
   },
   "image": {
     "message": "Image"

@@ -15,6 +15,11 @@
 
 	<body>
 		<h1 id="settingsTitle"></h1>
+		<div
+			id="toastRegion"
+			class="toast-region"
+			aria-live="polite"
+		></div>
 		<div class="fieldset-row">
 			<fieldset>
 				<legend id="telegramDesktopLegend"></legend>
@@ -41,23 +46,44 @@
 						placeholder=""
 					/>
 					<div id="botPreviewContainer">
+						<span
+							id="botStatusBadge"
+							class="status-badge"
+						></span>
 						<span id="botPreview"></span>
 					</div>
 				</div>
 				<div>
 					<label id="chatIdLabel"></label>
-						<input
-							id="chat_id"
-							type="text"
-							autocapitalize="none"
-							autocorrect="off"
-							spellcheck="false"
-							placeholder=""
-						/>
+					<input
+						id="chat_id"
+						type="text"
+						autocapitalize="none"
+						autocorrect="off"
+						spellcheck="false"
+						placeholder=""
+					/>
 					<div id="chatIdPreviewContainer">
+						<span
+							id="chatStatusBadge"
+							class="status-badge"
+						></span>
 						<img id="chatIdPhoto" />
 						<span id="chatIdPreview"></span>
 					</div>
+				</div>
+				<div class="test-send-block">
+					<label id="testMessageLabel"></label>
+					<textarea
+						id="test_message"
+						rows="2"
+						maxlength="280"
+						placeholder=""
+					></textarea>
+					<button
+						id="sendTestButton"
+						type="button"
+					></button>
 				</div>
 			</fieldset>
 		</div>
