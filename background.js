@@ -1,5 +1,11 @@
-const SETTINGS_KEYS = ["token", "chat_id", "telegram_username"];
+const SETTINGS_KEYS = ["token", "chat_id", "telegram_username", "default_send_method"];
 const TELEGRAM_API_BASE_URL = "https://api.telegram.org";
+const SEND_METHOD_DESKTOP = "desktop";
+const SEND_METHOD_BOT = "bot";
+const MENU_ID_DEFAULT = "sendToTelegramDefault";
+const MENU_ID_DESKTOP = "sendToTelegramDesktop";
+const MENU_ID_BOT_ROOT = "sendToTelegramBot";
+const CONTENT_CONTEXTS = ["page", "link", "selection", "image", "video", "audio"];
 
 function showNotification(title, message) {
     if (!chrome.notifications) {
@@ -32,14 +38,23 @@ async function safeAsync(fn) {
     }
 }
 
+function normalizeDefaultMethod(value) {
+    return value === SEND_METHOD_BOT ? SEND_METHOD_BOT : SEND_METHOD_DESKTOP;
+}
+
 function createContextMenus() {
     chrome.contextMenus.create({
-        id: "sendToTelegramDesktop",
-        title: chrome.i18n.getMessage("sendDesktop"),
-        contexts: ["page", "link", "selection", "image", "video", "audio"]
+        id: MENU_ID_DEFAULT,
+        title: chrome.i18n.getMessage("sendDefault"),
+        contexts: CONTENT_CONTEXTS
     });
     chrome.contextMenus.create({
-        id: "sendToTelegramBot",
+        id: MENU_ID_DESKTOP,
+        title: chrome.i18n.getMessage("sendDesktop"),
+        contexts: CONTENT_CONTEXTS
+    });
+    chrome.contextMenus.create({
+        id: MENU_ID_BOT_ROOT,
         title: chrome.i18n.getMessage("sendBot"),
         contexts: ["all"]
     });
@@ -54,7 +69,7 @@ function createContextMenus() {
     ].forEach(({ id, context }) => {
         chrome.contextMenus.create({
             id: `sendToTelegramBot_${id}`,
-            parentId: "sendToTelegramBot",
+            parentId: MENU_ID_BOT_ROOT,
             title: chrome.i18n.getMessage(id),
             contexts: [context]
         });
@@ -70,7 +85,11 @@ function resetContextMenus() {
     });
 }
 
-function buildTelegramPayload(menuItemId, info, chat_id) {
+function getContentFromContext(info) {
+    return info.selectionText || info.linkUrl || info.srcUrl || info.pageUrl;
+}
+
+function buildTelegramPayloadByMenu(menuItemId, info, chat_id) {
     let endpoint = "sendMessage";
     let payload = { chat_id };
 
@@ -96,8 +115,30 @@ function buildTelegramPayload(menuItemId, info, chat_id) {
     return { endpoint, payload };
 }
 
-function getContentFromContext(info) {
-    return info.selectionText || info.linkUrl || info.srcUrl || info.pageUrl;
+function buildTelegramPayloadByContext(info, chat_id) {
+    let endpoint = "sendMessage";
+    let payload = { chat_id };
+
+    if (info.mediaType === "image" && info.srcUrl) {
+        endpoint = "sendPhoto";
+        payload.photo = info.srcUrl;
+    } else if (info.mediaType === "audio" && info.srcUrl) {
+        endpoint = "sendAudio";
+        payload.audio = info.srcUrl;
+    } else if (info.mediaType === "video" && info.srcUrl) {
+        endpoint = "sendVideo";
+        payload.video = info.srcUrl;
+    } else if (info.selectionText) {
+        payload.text = info.selectionText;
+    } else if (info.linkUrl) {
+        payload.text = info.linkUrl;
+    } else if (info.pageUrl) {
+        payload.text = info.pageUrl;
+    } else {
+        return null;
+    }
+
+    return { endpoint, payload };
 }
 
 function getStoredSettings() {
@@ -126,6 +167,55 @@ async function sendToTelegramApi(token, endpoint, payload) {
     }
 }
 
+function validateHasContent(info) {
+    return Boolean(getContentFromContext(info));
+}
+
+function ensureDesktopReady(info, telegram_username) {
+    if (!validateHasContent(info)) {
+        showError(chrome.i18n.getMessage("noContentError"));
+        return false;
+    }
+    if (!telegram_username) {
+        showError(chrome.i18n.getMessage("noAliasError"));
+        return false;
+    }
+    return true;
+}
+
+function ensureBotReady(info, token, chat_id) {
+    if (!validateHasContent(info)) {
+        showError(chrome.i18n.getMessage("noContentError"));
+        return false;
+    }
+    if (!token || !chat_id) {
+        showError(chrome.i18n.getMessage("noTokenError"));
+        return false;
+    }
+    return true;
+}
+
+function sendViaDesktop(info, telegram_username) {
+    const content = getContentFromContext(info);
+    const desktopUrl = `tg://resolve?domain=${telegram_username}&text=${encodeURIComponent(content)}`;
+    chrome.tabs.create({ url: desktopUrl });
+    showSuccess(chrome.i18n.getMessage("desktopSendStarted"));
+}
+
+async function sendViaBot(info, token, chat_id, menuItemId) {
+    const built = menuItemId === MENU_ID_DEFAULT
+        ? buildTelegramPayloadByContext(info, chat_id)
+        : buildTelegramPayloadByMenu(menuItemId, info, chat_id);
+
+    if (!built) {
+        showError(chrome.i18n.getMessage("noContentError"));
+        return;
+    }
+
+    await sendToTelegramApi(token, built.endpoint, built.payload);
+    showSuccess(chrome.i18n.getMessage("botSendSuccess"));
+}
+
 chrome.runtime.onInstalled.addListener(() => {
     safeAsync(resetContextMenus);
 });
@@ -136,27 +226,36 @@ chrome.runtime.onStartup.addListener(() => {
 
 chrome.contextMenus.onClicked.addListener((info) => {
     safeAsync(async () => {
-        if (info.menuItemId === "sendToTelegramBot") {
+        if (info.menuItemId === MENU_ID_BOT_ROOT) {
             return;
         }
 
-        const content = getContentFromContext(info);
-        if (!content) {
-            showError(chrome.i18n.getMessage("noContentError"));
+        const settings = await getStoredSettings();
+        const token = settings.token;
+        const chat_id = settings.chat_id;
+        const telegram_username = settings.telegram_username;
+        const defaultMethod = normalizeDefaultMethod(settings.default_send_method);
+
+        if (info.menuItemId === MENU_ID_DEFAULT) {
+            if (defaultMethod === SEND_METHOD_BOT) {
+                if (!ensureBotReady(info, token, chat_id)) {
+                    return;
+                }
+                await sendViaBot(info, token, chat_id, MENU_ID_DEFAULT);
+            } else {
+                if (!ensureDesktopReady(info, telegram_username)) {
+                    return;
+                }
+                sendViaDesktop(info, telegram_username);
+            }
             return;
         }
 
-        const { token, chat_id, telegram_username } = await getStoredSettings();
-
-        if (info.menuItemId === "sendToTelegramDesktop") {
-            if (!telegram_username) {
-                showError(chrome.i18n.getMessage("noAliasError"));
+        if (info.menuItemId === MENU_ID_DESKTOP) {
+            if (!ensureDesktopReady(info, telegram_username)) {
                 return;
             }
-
-            const desktopUrl = `tg://resolve?domain=${telegram_username}&text=${encodeURIComponent(content)}`;
-            chrome.tabs.create({ url: desktopUrl });
-            showSuccess(chrome.i18n.getMessage("desktopSendStarted"));
+            sendViaDesktop(info, telegram_username);
             return;
         }
 
@@ -164,19 +263,9 @@ chrome.contextMenus.onClicked.addListener((info) => {
             return;
         }
 
-        if (!token || !chat_id) {
-            showError(chrome.i18n.getMessage("noTokenError"));
+        if (!ensureBotReady(info, token, chat_id)) {
             return;
         }
-
-        const built = buildTelegramPayload(info.menuItemId, info, chat_id);
-        if (!built) {
-            showError(chrome.i18n.getMessage("noContentError"));
-            return;
-        }
-
-        const { endpoint, payload } = built;
-        await sendToTelegramApi(token, endpoint, payload);
-        showSuccess(chrome.i18n.getMessage("botSendSuccess"));
+        await sendViaBot(info, token, chat_id, info.menuItemId);
     });
 });

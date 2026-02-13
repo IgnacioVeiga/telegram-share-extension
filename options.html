@@ -32,6 +32,30 @@
 					spellcheck="false"
 					placeholder=""
 				/>
+				<div class="default-method-block">
+					<label id="defaultMethodLabel"></label>
+					<div class="default-method-options">
+						<label class="method-option">
+							<input
+								id="defaultMethodDesktop"
+								name="default_send_method"
+								type="radio"
+								value="desktop"
+							/>
+							<span id="defaultMethodDesktopLabel"></span>
+						</label>
+						<label class="method-option">
+							<input
+								id="defaultMethodBot"
+								name="default_send_method"
+								type="radio"
+								value="bot"
+							/>
+							<span id="defaultMethodBotLabel"></span>
+						</label>
+					</div>
+					<p id="defaultMethodHint"></p>
+				</div>
 			</fieldset>
 			<fieldset>
 				<legend id="botApiLegend"></legend>
@@ -74,12 +98,12 @@
 				</div>
 				<div class="test-send-block">
 					<label id="testMessageLabel"></label>
-					<textarea
+					<input
 						id="test_message"
-						rows="2"
+						type="text"
 						maxlength="280"
 						placeholder=""
-					></textarea>
+					/>
 					<button
 						id="sendTestButton"
 						type="button"
@@ -87,10 +111,12 @@
 				</div>
 			</fieldset>
 		</div>
-		<button
-			id="saveButton"
-			type="button"
-		></button>
+		<div class="action-row">
+			<button
+				id="saveButton"
+				type="button"
+			></button>
+		</div>
 
 		<script src="options.js"></script>
 	</body>

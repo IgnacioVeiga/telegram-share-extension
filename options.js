@@ -1,8 +1,10 @@
-const STORAGE_KEYS = ["token", "chat_id", "telegram_username"];
+const STORAGE_KEYS = ["token", "chat_id", "telegram_username", "default_send_method"];
 const TELEGRAM_API_BASE_URL = "https://api.telegram.org";
 const INPUT_DEBOUNCE_MS = 500;
 const TOAST_VISIBLE_MS = 3500;
 const TOAST_ANIMATION_MS = 180;
+const SEND_METHOD_DESKTOP = "desktop";
+const SEND_METHOD_BOT = "bot";
 
 document.addEventListener("DOMContentLoaded", () => {
     const elements = {
@@ -21,6 +23,12 @@ document.addEventListener("DOMContentLoaded", () => {
         saveButton: document.getElementById("saveButton"),
         botPreview: document.getElementById("botPreview"),
         botStatusBadge: document.getElementById("botStatusBadge"),
+        defaultMethodLabel: document.getElementById("defaultMethodLabel"),
+        defaultMethodDesktop: document.getElementById("defaultMethodDesktop"),
+        defaultMethodDesktopLabel: document.getElementById("defaultMethodDesktopLabel"),
+        defaultMethodBot: document.getElementById("defaultMethodBot"),
+        defaultMethodBotLabel: document.getElementById("defaultMethodBotLabel"),
+        defaultMethodHint: document.getElementById("defaultMethodHint"),
         testMessageLabel: document.getElementById("testMessageLabel"),
         testMessageInput: document.getElementById("test_message"),
         sendTestButton: document.getElementById("sendTestButton"),
@@ -34,6 +42,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function t(key) {
         return chrome.i18n.getMessage(key) || key;
+    }
+
+    function normalizeDefaultMethod(value) {
+        return value === SEND_METHOD_BOT ? SEND_METHOD_BOT : SEND_METHOD_DESKTOP;
+    }
+
+    function getSelectedDefaultMethod() {
+        if (elements.defaultMethodBot.checked) {
+            return SEND_METHOD_BOT;
+        }
+        return SEND_METHOD_DESKTOP;
+    }
+
+    function applySelectedDefaultMethod(value) {
+        const normalized = normalizeDefaultMethod(value);
+        elements.defaultMethodDesktop.checked = normalized === SEND_METHOD_DESKTOP;
+        elements.defaultMethodBot.checked = normalized === SEND_METHOD_BOT;
     }
 
     function applyI18nTexts() {
@@ -51,6 +76,10 @@ document.addEventListener("DOMContentLoaded", () => {
         elements.chatIdInput.title = t("chatIdTitle");
         elements.chatIdInput.placeholder = t("chatIdPlaceholder");
         elements.chatIdPhoto.alt = t("chatPhotoAlt");
+        elements.defaultMethodLabel.innerText = t("defaultMethodLabel");
+        elements.defaultMethodDesktopLabel.innerText = t("defaultMethodDesktop");
+        elements.defaultMethodBotLabel.innerText = t("defaultMethodBot");
+        elements.defaultMethodHint.innerText = t("defaultMethodHint");
         elements.testMessageLabel.innerText = t("testMessageLabel");
         elements.testMessageInput.placeholder = t("testMessagePlaceholder");
         elements.saveButton.innerText = t("saveButton");
@@ -183,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     async function updateChatPreview(token, chat_id) {
-        // Request id prevents stale responses from older fetches overriding the latest state.
+        // Request id avoids stale responses overriding newer preview state.
         const requestId = ++chatPreviewRequestId;
         renderChatPreview({ state: "loading" });
 
@@ -306,18 +335,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const token = elements.tokenInput.value.trim();
         const chat_id = elements.chatIdInput.value.trim();
         const telegram_username = elements.telegramUsernameInput.value.trim();
+        const default_send_method = normalizeDefaultMethod(getSelectedDefaultMethod());
 
         if (telegram_username.includes("@")) {
             showToast(t("usernameError"), "error");
             return;
         }
 
-        chrome.storage.local.set({ token, chat_id, telegram_username }, () => {
+        chrome.storage.local.set({ token, chat_id, telegram_username, default_send_method }, () => {
             showToast(t("savedMessage"), "success");
         });
     }
 
     applyI18nTexts();
+    applySelectedDefaultMethod(SEND_METHOD_DESKTOP);
+
     if (!elements.testMessageInput.value.trim()) {
         elements.testMessageInput.value = t("defaultTestMessage");
     }
@@ -329,6 +361,7 @@ document.addEventListener("DOMContentLoaded", () => {
         elements.tokenInput.value = result.token || "";
         elements.chatIdInput.value = result.chat_id || "";
         elements.telegramUsernameInput.value = result.telegram_username || "";
+        applySelectedDefaultMethod(result.default_send_method);
 
         if (result.token) {
             updateBotPreview(result.token.trim());
@@ -344,7 +377,8 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.chatIdInput.addEventListener("input", onChatIdOrTokenChange);
     elements.tokenInput.addEventListener("input", onBotTokenChange);
     elements.testMessageInput.addEventListener("keydown", (event) => {
-        if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+        if (event.key === "Enter") {
+            event.preventDefault();
             onSendTestClick();
         }
     });

@@ -65,8 +65,23 @@
   "sendDesktop": {
     "message": "Send via Telegram Desktop"
   },
+  "sendDefault": {
+    "message": "Quick send (default method)"
+  },
   "sendBot": {
     "message": "Send via Bot API"
+  },
+  "defaultMethodLabel": {
+    "message": "Default method for quick send"
+  },
+  "defaultMethodDesktop": {
+    "message": "Desktop"
+  },
+  "defaultMethodBot": {
+    "message": "Bot API"
+  },
+  "defaultMethodHint": {
+    "message": "Used by the \"Quick send\" context menu item."
   },
   "errorTitle": {
     "message": "Telegram Share Error"

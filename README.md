@@ -7,8 +7,11 @@ You can choose between using **Telegram Desktop** or the **Telegram Bot API** to
 
 - Share links, images, and text from the context menu.
 - Choose the sending method directly from the context menu: **Telegram Desktop** or **Bot API**.
+- Quick send item that uses your configured default method (**Desktop** or **Bot API**).
 - Configure Telegram alias, Bot API token, and chat ID from the options page.
+- Configure a default method for quick-send behavior from the options page.
 - Live preview for bot token and chat ID validation from the options page.
+- Inline test message sender to validate Bot API setup.
 - Notifications on successful or failed actions.
 - Modern, clean UI for settings.
 - Local storage of settings (no external server involved).

@@ -7,8 +7,11 @@ Podés elegir entre usar **Telegram Desktop** o la **Telegram Bot API** para env
 
 - Compartir enlaces, imágenes y texto desde el menú contextual.
 - Elegir el método de envío directamente desde el menú contextual: **Telegram Desktop** o **Bot API**.
+- Opción de envío rápido que usa el método por defecto configurado (**Desktop** o **Bot API**).
 - Configurar alias de Telegram, token del Bot API y chat ID desde la página de opciones.
+- Configurar el método por defecto para el envío rápido desde la página de opciones.
 - Vista previa en vivo para validar token del bot y chat ID desde la configuración.
+- Envío de mensaje de prueba en la interfaz para validar la configuración del Bot API.
 - Notificaciones en caso de éxito o error.
 - Interfaz moderna y limpia para la configuración.
 - Almacenamiento de configuraciones de forma local (sin servidores externos).

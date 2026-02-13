@@ -65,8 +65,23 @@
   "sendDesktop": {
     "message": "Enviar por Telegram Desktop"
   },
+  "sendDefault": {
+    "message": "Envío rápido (método por defecto)"
+  },
   "sendBot": {
     "message": "Enviar por Bot API"
+  },
+  "defaultMethodLabel": {
+    "message": "Método por defecto para envío rápido"
+  },
+  "defaultMethodDesktop": {
+    "message": "Desktop"
+  },
+  "defaultMethodBot": {
+    "message": "Bot API"
+  },
+  "defaultMethodHint": {
+    "message": "Se usa en la opción \"Envío rápido\" del menú contextual."
   },
   "errorTitle": {
     "message": "Error de Telegram Share"
